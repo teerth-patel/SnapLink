@@ -1,13 +1,12 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './pages/Login';
+import React from 'react';
+import Login from './components/Login';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <h1>Welcome to SnapLink</h1>
+      <Login />
+    </div>
   );
 }
 
