@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRoute = require('./routes/authRoute')
+const fileRoute = require('./routes/fileRoutes')
 require("dotenv").config();
 
 const app = express();
@@ -18,6 +19,7 @@ mongoose
   })
   .catch((err) => console.log("error connecting to mongo", err));
 app.use('/api', authRoute);
+app.use('/api', fileRoute)
 app.get("/", (req, res) => {
   res.send("api get / works");
 });
