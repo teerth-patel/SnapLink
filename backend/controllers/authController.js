@@ -4,10 +4,9 @@ const User = require(`../models/userModel`)
 
 
 const signUp = async (req, res) => {
-
+  console.log('inside sign up');
   try {
     const { name, email, password } = req.body;
-
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -15,10 +14,11 @@ const signUp = async (req, res) => {
     } else if (!email || email == "") {
       return res.status(400).json({ success: false, message: `Email id cannot be empty` });
     } else {
-      const newUser = new User({ name, email, password });
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = new User({ name, email, password: hashedPassword });
       await newUser.save();
     }
-
 
     return res.status(201).json({ success: true, message: `User: ${name} registered successfully` });
   } catch (error) {
@@ -41,7 +41,7 @@ const signIn = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    res.json({ user: { id: user._id, name: user.name, email: user.email }, token });
+    res.json({ success: true, message: `${user.name} Logged in successfully`, user: { id: user._id, name: user.name, email: user.email }, token });
 
   }
   catch (error) {
